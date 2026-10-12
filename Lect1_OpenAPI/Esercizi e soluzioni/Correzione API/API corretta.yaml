@@ -1,0 +1,117 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Esercizio giochi"
+  description: "API gestione piattaforma di giochi"
+  
+paths:
+  /giochi/:
+    get:
+      summary: "Elenco dei giochi di data categoria"
+      operationId: "getGameByCategory"
+      parameters:
+        - in: query
+          name: "categoria"
+          description: "Categoria del gioco"
+          required: true
+          type: string
+          enum:
+            - Shooter
+            - Adventure
+            - Puzzle
+            - Sport
+      responses:
+        "200":
+          description: "Successo"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Gioco'
+        "400":
+          description: "Input non valido"
+    
+    post:
+      summary: "Aggiunge un insieme di giochi"
+      operationId: "addGames"
+      parameters:
+        - name: "nuoviGiochi"
+          in: body
+          description: "Elenco dei giochi da aggiungere"
+          required: true
+          schema:
+            type: array
+            minItems: 1 # specifichiamo che almeno un gioco va inserito nell'array quando si chiama questo metodo.
+            maxItems: 10 # non era richiesto, ma ggiungiamo un massimo di giochi che possono stare nell'array (in questo caso, 10 giochi).
+            items:
+              $ref: "#/definitions/Gioco"
+      responses:
+        "200":
+          description: "Successo"
+        "400":
+          description: "Input non valido"  
+  
+  
+  
+  /giochi/{idGioco}:
+    put: # utilizziamo PUT, e non vincoliamo alla modifica del numero di giocatori (per semplicità). 
+    # Per l'esame va benissimo anche cosi. Se volete invece capire meglio come vincolare slo al numero di giocatori, 
+    # approfondite il metodo PATCH, perché con il PUT in genere si lascia la possibilità di modificare l'intera risorsa.
+    # Ricordate comunque che lo schema del body definisce i dati che il client deve inviare, non determina automaticamente
+    # quali proprietà il server andrà a modificare -> la modifica sarà gestita poi dal server stesso (che magari in questo caso
+    # potrebbe isolare solo i due valori sul numero di giocatori, e ignorare il resto del body). 
+      summary: "Modifica il numero minimo e il numero massimo di giocatori in un gioco"
+      operationId: "editGame"
+      parameters:
+        - in: path
+          name: "idGioco"
+          description: "id del gioco"
+          required: true
+          type: integer
+          format: "int32"
+          minimum: 0
+        - in: body
+          name: "Gioco aggiornato"
+          description: "Oggetto gioco con informazione aggiornata"
+          required: true
+          schema:
+            $ref: "#/definitions/Gioco"
+      responses:
+        "200":
+          description: "Successo"
+        "400":
+          description: "Input non valido"
+          
+
+definitions:
+  Gioco:
+    type: object
+    description: "Gioco della piattaforma"
+    required:
+      - id
+      - nome
+      - categoria
+      - minNum
+      - maxNum
+    properties:
+      id:
+        type: integer
+        format: "int32"
+        minimum: 0
+      nome:
+        type: string
+        example: "Tetris"
+      categoria:
+        type: string
+        enum:
+          - Shooter
+          - Adventure
+          - Puzzle
+          - Sport
+      minNum:
+        type: integer
+        format: "int32"
+        minimum: 0
+      maxNum:
+        type: integer
+        format: "int32"
+        minimum: 1

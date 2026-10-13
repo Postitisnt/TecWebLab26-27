@@ -1,0 +1,251 @@
+swagger: '2.0'
+info:
+  description: 'API gestione immagini e tag (annotazioni)'
+  title: 'Esercizio immagini e tags'
+  version: 1.0.0
+
+paths:
+  /images/:
+    get:
+      summary: 'ritorna elenco immagini filtrate per categoria'
+      operationId: 'listaImmaginiPerCategoria'
+      parameters:
+      - name: category
+        in: query
+        description: "Categoria dell'immagine (pittura, pubblicita, fotografia)"
+        required: true
+        type: string
+        enum: [pittura, pubblicita, fotografia]
+        # l'enum sopra è equivalente alla forma seguente
+        #
+        #enum:
+        #   - pittura
+        #   - pubblicita
+        #   - fotografia
+      responses:
+        '200':
+          description: 'successo'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Image'
+        '400':
+          description: 'categoria mancante o non valida'
+          schema:
+            $ref: '#/definitions/Error' # abbiamo aggiunto una definition per i messaggi di errore!
+
+  /images/{imageId}/tags/:
+    get:
+      summary: 'ritorna i tag associati a una immagine'
+      operationId: 'listaTagPerImmagine'
+      parameters:
+      - name: imageId
+        in: path
+        description: "ID dell'immagine"
+        required: true
+        type: string # questa volta passiamo un id in formato stringa, come 'IMG123'
+      responses:
+        '200':
+          description: 'successo'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+        '400':
+          description: 'ID non valido o immagine inesistente'
+          schema:
+            $ref: '#/definitions/Error'
+
+    post:
+      summary: 'aggiunge un tag esistente a una immagine'
+      operationId: 'aggiungiTag'
+      # Si utilizza POST (e non PUT) perché questa operazione
+      # non aggiorna o sostituisce una risorsa esistente,
+      # ma crea una nuova relazione tra due risorse già presenti:
+      # - l'immagine identificata da imageId
+      # - il tag identificato da tagId
+      #
+      # In termini REST, "aggiungere un elemento a una collezione"
+      # si modella tipicamente con POST sulla collezione stessa
+      # (/images/{imageId}/tags/).
+      #
+      # Se invece utilizzassimo PUT sullo stesso path (/images/{imageId}/tags/),
+      # staremmo chiedendo di sostituire l'intera lista dei tag dell'immagine
+      # con il contenuto del body, anziché aggiungere un tag.
+      #
+      # PUT avrebbe senso solo con l'ID del tag nel path
+      # (/images/{imageId}/tags/{tagId}/), perché in quel caso l'URL
+      # identifica proprio l'associazione da creare, e l'operazione è
+      # idempotente. Questa versione alternativa è riportata, commentata,
+      # a fine file.
+
+      parameters:
+      - name: imageId
+        in: path
+        description: "ID dell'immagine"
+        required: true
+        type: string
+
+      # Questo parametro (sotto) rappresenta il corpo (body) della richiesta HTTP POST.
+      # Serve per dire al backend quale tag esistente si vuole aggiungere all'immagine (identificata da imageId).
+      # Il client invia un JSON con la proprietà "tagId", che contiene l'identificatore del tag.
+      # Esempio di richiesta:
+      #     POST /images/IMG123/tags/
+      #     { "tagId": "t-impressionismo" }
+      # Così, all'immagine con id "IMG123" verrà aggiunto il tag con id "t-impressionismo" (operazione gestita in backend).
+      - name: tagId
+        in: body
+        description: 'ID del tag da aggiungere'
+        required: true
+        schema:
+          type: object
+          required:
+            - tagId
+          properties: # il body non corrisponde a nessun elemento in definition, quindi descriviamo qui i suoi campi
+                      # (nell'esercizio giochi non serviva perché il body era un $ref alla definition Gioco, ricontrollate).
+                      # In fondo trovate la versione con le definition, per chiarezza.
+            tagId:
+              type: string
+              description: 'ID del tag esistente da associare'
+              example: 't-impressionismo'
+
+      responses:
+        '200':
+          description: "successo (restituisce l'immagine aggiornata, con il nuovo tag)"
+          schema:
+            $ref: '#/definitions/Image'
+        '400':
+          description: 'errore (immagine o tag inesistente, oppure input non valido)'
+          schema:
+            $ref: '#/definitions/Error'
+
+# Gli esempi delle risposte vengono generati automaticamente
+# a partire dai valori "example" indicati nelle definitions (sotto),
+# quindi utilizzateli >.<
+definitions:
+  Image:
+    type: object
+    required:
+      - id
+      - url
+      - category
+      - tags
+    properties:
+      id:
+        type: string
+        example: 'img1'
+      url:
+        type: string
+        example: 'https://example.com/img/img1.jpg'
+      category:
+        type: string
+        enum: [pittura, pubblicita, fotografia]
+        example: 'pittura'
+      tags:
+        type: array
+        uniqueItems: true # perché i tag di una immagine sono un insieme
+                          # (lo stesso tag non può comparire due volte)
+                          # Utilizzatelo quando serve!
+        items:
+          $ref: '#/definitions/Tag'
+
+  Tag:
+    type: object
+    required:
+      - id
+      - name
+      - score
+    properties:
+      id:
+        type: string
+        example: 't-impressionismo'
+      name:
+        type: string
+        example: 'impressionismo'
+      score:
+        type: integer
+        enum: [1, 2, 3]
+        example: 3
+
+  # Schema comune per le risposte di errore (status code 400), non necessario, ma almeno lo vedete
+  Error:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        example: 'Richiesta non valida'
+
+
+
+##################### VERSIONE ALTERNATIVA DEL POST #####################
+#
+# La lettura sensata per "aggiungere un tag in base al suo ID a un'immagine"
+# è che, dato un tag esistente (quindi con un ID già noto al sistema), noi lo
+# andiamo direttamente ad aggiungere ad un'immagine (che esiste).
+#
+# Perciò, anziché passare l'ID del tag nel body della richiesta, potremmo 
+# passarlo direttamente nel path, come mostrato sotto:
+
+#  /images/{imageId}/tags/{tagId}/:
+#    put: # con questa versione, sarebbe sensato anche l'utilizzo di post, quindi vanno bene entrambi
+#      summary: 'aggiunge un tag esistente a una immagine'
+#      operationId: 'aggiungiTag'
+#      parameters:
+#      - name: imageId
+#        in: path
+#        description: "ID dell'immagine"
+#        required: true
+#        type: string
+#      - name: tagId
+#        in: path
+#        description: 'ID del tag da aggiungere'
+#        required: true
+#        type: string
+#      responses:
+#        '200':
+#          description: 'successo'
+#          schema:
+#            $ref: '#/definitions/Tag'
+#        '400':
+#          description: 'errore (immagine o tag inesistente, oppure input non valido)'
+#          schema:
+#            $ref: '#/definitions/Error'
+
+
+################## VERSIONE ALTERNATIVA DEL BODY (CON $REF) #####################
+#
+# Anziché descrivere la struttura del body direttamente dentro il parametro
+# del POST (versione "inline", quella usata sopra), possiamo spostarla in una
+# definition separata e richiamarla con $ref, come fatto nell'esercizio giochi
+# con la definition Gioco. Le due forme sono equivalenti.
+#
+# Serve una definition apposita (TagIdRequest) perché il body non coincide con
+# Tag: il client invia solo l'ID del tag, non anche name e score.
+
+# Parametro body del POST:
+#
+#      - name: tagId
+#        in: body
+#        description: 'ID del tag da aggiungere'
+#        required: true
+#        schema:
+#          $ref: '#/definitions/TagIdRequest'
+
+# Definition da aggiungere nella sezione definitions:
+#
+#  TagIdRequest:
+#    type: object
+#    required:
+#      - tagId
+#    properties:
+#      tagId:
+#        type: string
+#        description: 'ID del tag esistente da associare'
+#        example: 't-impressionismo'
+
+#
+# Notate che questa cosa l'avremmo potuta fare anche nella versione
+# di modifica del numero minimo e massimo di giocatori nell'esercizio
+# precedente. Provate a farla senza guardare le mie soluzioni prima :)

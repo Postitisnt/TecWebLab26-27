@@ -1,0 +1,36 @@
+#survey-container {
+    box-sizing: border-box; /* width include anche padding e bordo - sotto avete la versione con 
+                            "content-box" come valore, che non include né padding né bordo */
+    width: 50%;             /* larghezza TOTALE del riquadro: 50% del body */
+    margin: 0 auto;         /* 0 sopra/sotto, auto a destra/sinistra: centra il riquadro */
+    padding: 15px 30px;     /* 15px sopra/sotto, 30px destra/sinistra */
+    border: 1px solid black;
+}
+
+
+/* #survey-container {
+/*      box-sizing: content-box;     /* (opzione di default) width indica solo il contenuto */
+/*      width: calc(50% - 62px);     /* togliamo padding (30px + 30px) e bordo (1px + 1px) dalla width,
+/*                                   così il riquadro totale è esattamente il 50% del body */
+/*      margin: 0 auto;
+/*      padding: 15px 30px;
+/*      border: 1px solid black;
+/* }
+*/
+
+.question {
+    margin-bottom: 2px;
+}
+
+.question p {
+    margin-bottom: 5px; /* Sovrascriviamo il margine che di default viene fornito al p */
+}
+
+.question ol {
+    margin-left: 15px;
+}
+
+#BoldTxt {
+    font-weight: bold;
+}
+  

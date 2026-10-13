@@ -63,7 +63,7 @@ paths:
       operationId: 'aggiornaArticolo'
       parameters:
         - name: articoloID
-          description: 'articolo da aggiornare'
+          description: 'id articolo da aggiornare'
           type: integer
           in: path
           required: true

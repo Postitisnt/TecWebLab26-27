@@ -46,13 +46,8 @@ Nella cartella è presente anche un secondo file HTML, `pokedexSenzaClassi.html`
 Scrivere un nuovo file `pokedexSenzaClassi.css` che riproduca **esattamente lo stesso risultato** della Parte 1, rispettando le stesse 11 specifiche.
 Per raggiungere gli elementi bisognerà usare selettori di elemento, selettori annidati (es. `section p`) e pseudo-classi (es. `:nth-child()`, `:nth-of-type()`).
 
-## Domande finali
 
-1. Nella Parte 1, al punto 8: conta l'ordine in cui scrivete la regola rispetto a quella del punto 4? Perché?
-2. Nella Parte 2: perché `section:nth-child(2)` non seleziona la sezione degli avvistati? Cosa bisogna usare al suo posto?
-3. Confrontate le due versioni del CSS: quale preferireste mantenere in un sito vero? Cosa succederebbe a ciascuna se qualcuno aggiungesse una nuova sezione tra "Catturati" e "Avvistati"?
-
-Buon lavoro!
+**Buon lavoro!** :)
 
 ---
 

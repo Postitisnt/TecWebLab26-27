@@ -1,0 +1,42 @@
+body {
+    /* Il browser usa il primo font disponibile della lista:
+       prima Verdana, poi Arial, e se nessuno dei due è installato
+       un qualsiasi font senza grazie (sans-serif) */
+    font-family: Verdana, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+    background-color: #D3D3D3;
+    font-style: italic;
+    text-align: right;
+}
+
+span.commodo {
+    font-weight: bold;
+    letter-spacing: 20px;
+    background-color: red;
+    font-size: 125%;
+}
+
+span {
+    background-color: yellow;
+}
+
+/* CSS funziona a cascata: quindi legge le regole dall'alto verso il basso e, se due
+   regole assegnano un valore alla stessa proprietà dello stesso elemento, vince
+   quella scritta per ultima.
+
+   Questo però vale solo a parità di SPECIFICITÀ. La specificità misura quanto un
+   selettore è "preciso", e conta più dell'ordine:
+     - id (es. #sec1)            -> più specifico
+     - classe (es. .commodo)     -> mediamente specifico
+     - elemento (es. span)       -> meno specifico
+   Un selettore che combina elemento e classe (span.commodo) è più specifico del
+   solo elemento (span).
+
+   Per questo, anche se la regola "span" (sfondo giallo) è scritta DOPO la regola
+   "span.commodo" (sfondo rosso), gli span con classe commodo restano rossi:
+   span.commodo è più specifico di span, quindi vince, a prescindere dall'ordine.
+   Tutti gli altri span, invece, ricevono solo la regola "span" e diventano gialli
+*/
+

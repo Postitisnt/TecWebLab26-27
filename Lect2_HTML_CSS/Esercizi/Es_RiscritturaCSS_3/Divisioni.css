@@ -1,0 +1,55 @@
+body {
+    background-color: #FFFFEE;
+    column-count: 2; /* Divide il contenuto in due colonne */
+    column-rule-style: solid; /* Imposta lo stile della linea di separazione tra le colonne */
+    /* column-rule: 3px solid black; /* Si può scrivere anche tutto insieme: spessore, stile, colore */
+    /* column-gap: 10em; /* Imposta la distanza tra le colonne. Il default è 1em */
+    margin: 60px;
+    text-align: justify;
+    font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', serif;
+}
+
+h1, h2, h3 {
+    text-transform: uppercase;
+}
+
+/* Se togliete il commento sotto, l'intestazione non verrà spezzata tra le colonne */
+/* 
+h1 {
+    /* column-span: all; /* Impedisce che l'intestazione venga spezzata tra le colonne */
+    /* text-align: center;
+}
+*/
+
+
+#sec1 p::first-letter {
+    color: red;
+    font-size: 75px;
+    line-height: 52px;
+    font-family: Georgia, serif;
+}
+
+p {
+    margin-bottom: 30px;
+}
+
+section {
+    padding: 20px;
+    /* break-inside: avoid; /* impedirebbe di spezzare una sezione tra due colonne:
+       ogni sezione resterebbe tutta in una colonna. Nello screenshot invece la
+       prima sezione continua nella colonna di destra, quindi non lo usiamo */
+}
+
+/* Selezioniamo gli elementi li contenuti in un ol, e in base alla loro posizione:
+   - :nth-child(odd)  -> posizioni dispari (1, 3, 5...)
+   - :nth-child(even) -> posizioni pari (2, 4, 6...)
+   Il conteggio parte da 1. 
+   Il risultato è un effetto "a righe alternate". */
+ol li:nth-child(odd) {
+    background: gray;
+}
+
+ol li:nth-child(even) {
+    background: lightgray;
+}
+

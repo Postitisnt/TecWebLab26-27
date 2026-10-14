@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Esercizio Riscrittura 2 - ListaLegenda</title>
+        <!--
+        <style> /* commento di spiegazione sotto */
+            ol {
+                font-style: italic;
+                font-size: small;
+            }
+        </style>
+        -->
+    </head>
+    <body>
+        <div id="es2" class="esercizio">
+            <h1>Esercizio 2</h1>
+            <p>Canzoni consigliate:</p>
+            <ul>
+                <li><b>Like a Stone - Audioslave<sup>*</sup></b></li>
+                <li><b>Rimmel - De Gregori<sup>*</sup></b></li>
+                <li><b>Black - Pearl Jam<sup>!</sup></b></li>
+            </ul>
+            <!--
+                <small> e <i> sono elementi inline: non possono contenere elementi di blocco
+                come <p> e <ol>. Per questo li applichiamo al testo DENTRO ogni elemento,
+                e non all'intero blocco della legenda.
+
+                Questo però, causa un problema, perché non abbiamo modo di ottenere gli
+                effetti di small ed i sui numeri della lista ordinata. Si può aggirare
+                applicando i due elementi all'intero blocco, e funziona, ma non è HTML valido
+                come detto sopra. Perciò, l'unico modo CORRETTO per ottenere l'effetto
+                anche per i punti della lista è quello di utilizzare CSS (come commentato nel 
+                blocco <style> sopra).
+            -->
+            <p><small><i>Legenda:</i></small></p>
+            <ol>
+                <li><small><i>* = ascoltata</i></small></li>
+                <li><small><i>! = non ascoltata</i></small></li>
+            </ol>
+        </div>
+    </body>
+</html>

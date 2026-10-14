@@ -1,0 +1,31 @@
+body {
+    /* I nomi di font composti da più parole (es. Courier New) si scrivono
+       tra virgolette, singole o doppie, così è chiaro che si tratta di un unico nome.
+       Le famiglie generiche (es. monospace, sans-serif, serif) invece NON vanno
+       mai tra virgolette: 'monospace' verrebbe interpretato come il nome di un font
+       specifico chiamato "monospace" (che non esiste), e non come la famiglia generica.
+       monospace è il font di riserva: se Courier New non è installato, il browser
+       usa un altro font a larghezza fissa */
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+}
+
+#sec1 {
+    background-color: lightgray;
+    text-align: justify; /* giustifica il testo */
+}
+
+a {
+    background-color: red;
+    font-size: 150%;
+}
+
+ol {
+    font-style: italic;
+    border: 3px dashed blue;
+}
+
+h1 {
+    text-align: center;
+}
+

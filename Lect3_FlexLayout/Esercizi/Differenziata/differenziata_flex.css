@@ -1,0 +1,144 @@
+/* Stile per font */
+.moulpali-regular {
+    font-family: "Moulpali", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Moulpali", sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    text-transform: uppercase;
+    margin: 1% 0;
+}
+
+h3 {
+    text-transform: uppercase;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column; /* Usate 'row' per il layout orizzontale e 'column' per il verticale */
+    align-items: center; /* allinea gli elementi contenuti al centro (asse secondario: qui orizzontale) */
+    gap: 20px; /* crea un pò di spazio tra gli elementi */
+    width: 100%;
+    max-width: 800px;
+}
+
+.gallery {
+    /* justify-content -> asse PRINCIPALE (quello di flex-direction)
+       align-items     -> asse SECONDARIO (perpendicolare al principale) */
+    display: flex;
+    flex-direction: column; /* Asse principale verticale */
+    justify-content: center; /* Centra gli elementi verticalmente (asse principale) */
+    align-items: center; /* Centra gli elementi orizzontalmente (asse secondario) */
+    gap: 20px; /* Distanza tra gli elementi */
+    width: 100%;
+    max-width: 700px;
+}
+
+#first-row, #second-row {
+    display: flex;
+    flex-direction: row; /* Asse principale orizzontale: ora justify e align si scambiano! */
+    flex-wrap: nowrap; /* Con 'wrap' le schede andrebbero a capo su schermi stretti */
+    gap: 20px;
+    justify-content: space-around; /* Distribuisce equamente lo spazio intorno agli elementi (in orizzontale) 
+    - agisce sui figli, quindi sui div contenuti in first e second row */
+    width: 100%; /* Assicura che la row occupi tutta la larghezza disponibile */
+}
+
+img {
+    border-radius: 10%; /* raggio degli angoli: 10% dell'immagine */
+}
+
+.image-container {
+    text-align: center;
+    background-color: white;
+    border: 2px solid black;
+    padding: 15px;
+    border-radius: 10%;
+    display: flex;
+    flex-direction: column; /* Titolo, sottotitolo e immagine uno sotto l'altro */
+    gap: 2px;
+    box-shadow: 10px 8px 4px 0 rgba(0, 0, 0, 0.2); /* spostamento x (valore negativo va a sinistra, positivo a destra), 
+    spostamento y (negativo va in alto, positivo verso il basso), sfocatura (0 = ombra netta), 
+    espansione (positivo allarga, negativo stringe), colore (nero al 20%) */
+    flex-grow: 1; /* Peso per dividersi lo spazio avanzato tra le schede della riga (tutte 1 = parti uguali) 
+    il grow dice di occupare tutto lo spazio disponibile. Quindi, se mettessimo il wrap, ci ritroveremmo
+    con una scheda che va a capo ed è enorme. Per mediare sta cosa, basta mettere flex-grow a 0, e dare un flex-basis
+    sensato rispetto allo spazio. Comunque gestito con media query in genere, e/o con le grid. */
+    flex-shrink: 1; /* Peso per stringersi se lo spazio non basta (0 = non si stringe mai) */
+    flex-basis: 150px; /* Larghezza di partenza: se tre schede da 150px non ci stanno nella riga, vanno a capo (serve flex-wrap: wrap nelle row) */
+    /* Le tre righe sopra si possono scrivere in una sola, nell'ordine "grow - shrink - basis":
+       flex: 1 1 150px; */
+}
+
+.title, .subtitle {
+    text-transform: uppercase;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.top .title {
+    font-size: 25px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    order: 1; /* Primo elemento della colonna (in alto) */
+}
+
+.top .subtitle {
+    font-size: 18px;
+    letter-spacing: 1px;
+    order: 2; /* Secondo elemento della colonna (al centro) */
+}
+
+.top img {
+    order: 3; /* Terzo elemento della colonna (in basso) */
+}
+
+.center .title {
+    font-size: 25px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    order: 1; /* order (flexbox): posizione visiva nel contenitore flex, dal valore più basso al più alto (default 0)
+    - quando hanno 0 (che viene prima dell'1), se poi diamo un "order: 1" ad uno solo dei 3
+    elementi, lo ritroviamo in fondo al div, poiché sopra di lui staranno tutti gli elementi 
+    con il default di "order: 0". */
+}
+
+.center .subtitle {
+    font-size: 18px;
+    letter-spacing: 1px;
+    order: 3;
+}
+
+.center img {
+    order: 2;
+}
+
+.bottom .title {
+    font-size: 25px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    order: 2;
+}
+
+.bottom .subtitle {
+    font-size: 18px;
+    letter-spacing: 1px;
+    order: 3;
+}
+
+.bottom img {
+    order: 1;
+}

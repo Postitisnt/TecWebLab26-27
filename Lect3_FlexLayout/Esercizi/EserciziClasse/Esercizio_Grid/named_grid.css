@@ -1,0 +1,65 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    /* Il browser dà al body un margine di default (8px): senza azzerarlo (sovrascrivendolo a 0),
+    #main partirebbe spostato di 8px ed essendo largo 100vw sborderebbe a destra.
+    padding: 0 e html sono solo per sicurezza (di default non hanno spazi) */
+    margin: 0;
+    padding: 0;
+}
+  
+#main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Quattro colonne uguali: le named areas definiscono solo la STRUTTURA
+    (quali celle formano ogni area), non le dimensioni. Senza questa riga le colonne sarebbero "auto",
+    cioè larghe in base al contenuto, e non più necessariamente uguali */
+    gap: 10px; /* Spazio tra le griglie */
+    width: 100vw;
+    max-width: 100vw;
+    padding: 5px;
+    height: 50vh;
+    font-family: Verdana;
+    /* Serve a definire il layout usando named grid areas */
+    grid-template-areas:
+      "a a b b"
+      "c d d d"
+      "e e e e";
+}
+
+#main div { 
+    background-color: #cc0000;
+    color: #fff;
+    display: flex; /* Direction row di default */
+    align-items: center; /* Centra verticalmente il testo */
+}
+
+#main div p {
+    margin: 0 15px; /* Aggiunge 15px di margine a sinistra e a destra del testo, lasciando il margine sopra e sotto a 0px */
+}
+
+#a {
+    grid-area: a; /* Assegna l'area 'a' */
+    justify-content: left; /* Allinea il testo a sinistra */
+}
+
+#b {
+    grid-area: b; /* Assegna l'area 'b' */
+    justify-content: right; /* Allinea il testo a destra */
+}
+
+#c {
+    grid-area: c; /* Assegna l'area 'c' */
+    justify-content: left; /* Allinea il testo a sinistra */
+}
+
+#d {
+    grid-area: d; /* Assegna l'area 'd' */
+    justify-content: right; /* Allinea il testo a destra */
+}
+
+#e {
+    grid-area: e; /* Assegna l'area 'e' */
+    justify-content: center; /* Centra il testo */
+}

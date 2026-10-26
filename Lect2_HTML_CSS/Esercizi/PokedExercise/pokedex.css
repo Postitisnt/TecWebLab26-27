@@ -1,0 +1,75 @@
+/* 1. Selettore di elemento: text-align viene ereditato da tutti gli elementi della pagina */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F2F2F2;
+    text-align: center;
+}
+
+/* 2. Raggruppamento: la stessa regola per h1 e h2 */
+h1, h2 {
+    color: #CC0000;
+}
+
+/* 3. Selettore di elemento: si somma alla regola sopra (h1 resta anche rosso) */
+h1 {
+    text-transform: uppercase;
+}
+
+/* 4. Selettore di classe: tutte le carte */
+.carta {
+    display: inline-block; /* le carte si affiancano come parole in una riga, invece di andare a capo */
+    vertical-align: top; /* allinea le carte in alto, anche se hanno altezze diverse */
+    width: 160px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    text-align: center; /* ridondante, perché già ereditato dal body, ma lo mettiamo per chiarezza */
+    padding: 10px;
+}
+
+/* 5. Selettore discendente: solo le immagini dentro le carte */
+.carta img {
+    width: 100px;
+}
+
+/* 6. Selettori di classe: un colore per ogni tipo
+   (la classe acqua compare due volte nell'HTML: la regola vale per entrambe) */
+.elettro { color: goldenrod; }
+.fuoco { color: orangered; }
+.acqua { color: dodgerblue; }
+.erba { color: green; }
+.normale { color: gray; }
+.psico { color: mediumorchid; }
+
+/* 7. Selettore discendente con id: solo le immagini dentro la sezione avvistati.
+   Usare solo ".carta img" renderebbe nere anche le immagini dei Pokémon catturati! */
+#avvistati img {
+    filter: brightness(0);
+}
+
+/* 8. Selettore di id: l'id è più specifico della classe, quindi questo bordo
+   vince su quello di .carta indipendentemente dall'ordine delle regole */
+#leggendario {
+    border: 4px solid gold;
+}
+
+/* 9. Selettore di classe: lo zaino */
+.zaino {
+    border: 2px solid #CC0000;
+    width: 25%;
+    min-width: 200px;
+    margin: auto; /* centra il blocco (a destra e a sinistra auto; sopra e sotto vale 0) */
+    list-style: none; /* rimuove i pallini della lista */
+    padding: 0; /* rimuove il rientro a sinistra riservato ai pallini */
+}
+
+/* 10. Pseudo-classe: i li in posizione pari (2, 4) della lista dello zaino */
+.zaino li:nth-child(even) {
+    background-color: lightgray;
+}
+
+/* 11. Pseudo-classe :hover + discendente: l'immagine dentro una carta avvistata
+   mentre il mouse è sopra la carta. Questo selettore è più specifico di
+   "#avvistati img" (ha in più una classe e una pseudo-classe), quindi vince */
+#avvistati .carta:hover img {
+    filter: none;
+}

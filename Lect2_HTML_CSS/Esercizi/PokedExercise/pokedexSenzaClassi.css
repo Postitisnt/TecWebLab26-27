@@ -1,0 +1,79 @@
+/* 1. Selettore di elemento: text-align viene ereditato da tutti gli elementi della pagina */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F2F2F2;
+    text-align: center;
+}
+
+/* 2. Raggruppamento: la stessa regola per h1 e h2 */
+h1, h2 {
+    color: #CC0000;
+}
+
+/* 3. Selettore di elemento: si somma alla regola sopra (h1 resta anche rosso) */
+h1 {
+    text-transform: uppercase;
+}
+
+/* 4. Selettore annidato: i div dentro le sezioni, cioè le carte.
+   (Funzionerebbe anche solo "div", perché nella pagina non ce ne sono altri,
+   ma "section div" è più preciso e resiste se in futuro si aggiungono altri div) */
+section div {
+    display: inline-block; /* le carte si affiancano come parole in una riga, invece di andare a capo */
+    vertical-align: top; /* allinea le carte in alto, anche se hanno altezze diverse */
+    width: 160px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* 5. Selettore annidato: solo le immagini dentro le carte */
+section div img {
+    width: 100px;
+}
+
+/* 6. Selettori di classe: le classi dei tipi sono le uniche rimaste, perché
+   gli span sono identici e solo la classe dice di che tipo è il Pokémon */
+.elettro { color: goldenrod; }
+.fuoco { color: orangered; }
+.acqua { color: dodgerblue; }
+.erba { color: green; }
+.normale { color: gray; }
+.psico { color: mediumorchid; }
+
+/* 7. Pseudo-classe :nth-of-type + annidamento: le immagini dentro la seconda section.
+   Attenzione: section:nth-child(2) non funzionerebbe! nth-child conta TUTTI i figli
+   del body (h1, p, section, section...), e il secondo figlio è il p, non una section.
+   nth-of-type invece conta solo gli elementi dello stesso tipo (le section) */
+section:nth-of-type(2) img {
+    filter: brightness(0);
+}
+
+/* 8. Pseudo-classi :nth-of-type e :last-child: l'ultimo div della seconda section,
+   cioè la carta del leggendario. Questo selettore è più specifico di "section div"
+   (ha in più due pseudo-classi), quindi il suo bordo vince su quello del punto 4 */
+section:nth-of-type(2) div:last-child {
+    border: 4px solid gold;
+}
+
+/* 9. Selettore di elemento: c'è una sola lista nella pagina */
+ul {
+    border: 2px solid #CC0000;
+    width: 25%;
+    margin: auto; /* centra il blocco (a destra e a sinistra auto; sopra e sotto vale 0) */
+    list-style: none;/* rimuove i pallini della lista */
+    padding: 0; /* rimuove il rientro a sinistra riservato ai pallini */
+}
+
+/* 10. Selettore annidato con pseudo-classe: i li in posizione pari (2, 4) della lista */
+ul li:nth-child(even) {
+    background-color: lightgray;
+}
+
+/* 11. Pseudo-classe :hover + annidamento: l'immagine dentro una carta della seconda section
+   mentre il mouse è sopra la carta. Questo selettore è più specifico di quello
+   del punto 7 (ha in più un elemento e una pseudo-classe), quindi vince */
+section:nth-of-type(2) div:hover img {
+    filter: none;
+}

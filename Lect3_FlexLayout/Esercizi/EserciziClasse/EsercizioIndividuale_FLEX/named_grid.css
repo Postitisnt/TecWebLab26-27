@@ -1,0 +1,56 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    /* Il browser dà al body un margine di default (8px): senza azzerarlo (sovrascrivendolo a 0),
+    #main partirebbe spostato di 8px ed essendo largo 100vw sborderebbe a destra.
+    padding: 0 e html sono solo per sicurezza (di default non hanno spazi) */
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    display: grid;
+    gap: 10px; 
+    width: 100vw;
+    height: 50vh;
+    padding: 5px;
+    font-family: Verdana;
+    grid-template-columns: 1fr 1fr; /* Due colonne uguali: le named areas definiscono solo la STRUTTURA
+    (quali celle formano ogni area), non le dimensioni. Senza questa riga le colonne sarebbero "auto",
+    cioè larghe in base al contenuto, e con testi diversi in C e D verrebbero di larghezze diverse */
+    grid-template-areas:
+      "a a"
+      "b b"
+      "c d";
+}
+
+/* Stile comune per tutti i div */
+#main div {
+    background-color: #cccccc;
+    color: #000;
+    display: flex;
+    align-items: center; /* Centra il contenuto verticalmente */
+    justify-content: center; /* Centra il contenuto orizzontalmente */
+}
+
+#a {
+    grid-area: a;
+}
+
+#b {
+    grid-area: b; 
+}
+
+#c {
+    grid-area: c; 
+}
+
+#d {
+    grid-area: d; 
+}
+
+#e {
+    display: none !important;
+}

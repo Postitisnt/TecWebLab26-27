@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    /* Il browser dà al body un margine di default (8px): senza azzerarlo (sovrascrivendolo a 0),
+    #main partirebbe spostato di 8px ed essendo largo 100vw sborderebbe a destra.
+    padding: 0 e html sono solo per sicurezza (di default non hanno spazi) */
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    display: flex;
+    flex-direction: row; /* Utilizziamo row e facciamo andare a capo gli elementi */
+    flex-wrap: wrap;
+    /* 
+        flex-wrap -> controlla se gli elementi flex devono andare a capo quando non c'è più spazio nella riga principale.
+
+        Valori possibili:
+        - nowrap -> (default) tutti gli elementi restano su una sola riga, anche se escono fuori dal contenitore
+        - wrap -> gli elementi vanno a capo automaticamente quando non ci stanno più
+
+        In questo caso:
+        -> gli elementi di #main sono disposti in orizzontale (flex-direction: row)
+            e vanno a capo su una nuova riga quando lo spazio non basta.
+    */
+    gap: 10px; /* Crea lo spazio sulla terza riga, tra area C e D */
+    row-gap: 0px;
+    width: 100vw;
+    height: 50vh;
+    align-items: center; /* Centra verticalmente - direzione perpendicolare alla principale */
+    justify-content: center; /* Centra orizzontalmente (lavora sull'asse principale -> in questo caso sull'asse della flex-direction, ovvero row)
+    se avessimo avuto 'flex-direction: column;', questo avrebbe lavorato sull'asse verticale, non orizzontale. */
+    font-family: Verdana;
+}
+
+/* Stile comune per tutti i div */
+#main div {
+    background-color: #cccccc;
+    height: calc(50vh/3);
+    color: #000;
+    display: flex;
+    align-items: center; /* Centra il contenuto verticalmente */
+    justify-content: center; /* Centra il contenuto orizzontalmente */
+    margin: 5px 0; /* Margine per creare spazio tra i div in verticale - margin: top-bottom left-right
+    Usiamo i margini invece di row-gap (che abbiamo messo a 0) */
+}
+
+/* Stile per i div che devono occupare tutta la larghezza */
+#a, #b, #e {
+    width: calc(100vw - 10px); /* lascia 10px liberi: "justify-content: center" (con direction row) li divide in 5px per lato */
+}
+
+/* Stile per i div che devono occupare metà della larghezza */
+#c, #d {
+    width: calc(50vw - 10px); /* (100vw - 10px di bordi laterali - 10px di gap tra C e D) / 2 = (100vw - 20px) / 2 = 50vw - 10px */
+}
+
+/* Nasconde l'elemento #e come da richiesta */
+#e {
+    display: none !important;
+}

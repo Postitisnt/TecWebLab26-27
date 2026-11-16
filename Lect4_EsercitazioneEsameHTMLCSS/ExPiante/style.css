@@ -1,0 +1,146 @@
+/* Stile generale */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0 0 7.5vh 0; /* top, right, bottom, left */
+    padding: 0;
+    background-image: url('src/flower.png');
+    background-repeat: repeat; /* L'immagine resta alla sua dimensione e si ripete per coprire tutto
+    (niente background-size: cover, che la ingrandirebbe facendole perdere qualità) */
+    color: #333;
+}
+
+header {
+    margin: auto;
+    width: 80%;
+}
+
+header h1 {
+    text-align: left;
+    font-style: italic;
+    font-weight: normal; /* Come in figura, quindi corsivo ma NON grassetto (h1 di default è in grassetto) */
+    font-size: 2.5rem;
+    margin-top: 5vh;
+}
+
+header p {
+    text-align: left;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 1.5%;
+    margin-bottom: 5vh;
+}
+
+main {
+    width: 90%;
+    margin: 0 auto; /* top-bottom, left-right */
+}
+
+/* ===================================================================================
+   Layout Figura 2 (versione mobile): queste regole valgono SEMPRE.
+   Da 992px in su, la media query in fondo sovrascrive solo quello che cambia.
+=================================================================================== */
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+    padding-bottom: 5%; /* Spazio extra sotto l'ultima card */
+}
+
+article {
+    display: flex;
+    flex-direction: column; /* I blocchi uno sotto l'altro, ognuno al 100% della larghezza */
+    gap: 2vh;
+    background: #fff;
+    padding: 5% 10%; /* top-bottom, left-right */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+article > a { /* "Acquista": è un link stilizzato come un bottone */
+    /* Un <a> di per sé è in linea (ignora width e margini verticali), ma qui è figlio diretto di article,
+    che è flex/grid: i figli di un flex o di un grid diventano automaticamente blocchi (display block) */
+    width: fit-content;
+    background: #f9a825;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem; /* Come il bottone originale (i bottoni hanno un testo più piccolo di default) */
+    padding: 1.5% 3%; /* top-bottom, left-right */
+    border-radius: 5px;
+    text-align: center;
+    margin: 2% 0;/* top-bottom, left-right */
+}
+
+article > a:hover {
+    background: #004de6;
+}
+
+article > div {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+article > div:nth-of-type(1) a { /* Titolo della pianta */
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: #f9a825;
+}
+
+article > div:nth-of-type(1) a:hover {
+    text-decoration: underline;
+}
+
+article > div:nth-of-type(2) { /* Dati quantitativi: temperatura e altezza, uno sotto l'altro */
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+}
+
+article > div:nth-of-type(2) > div p {
+    margin: 0;
+}
+
+/* ===================================================================================
+   Layout Figura 1: da 992px in su valgono le regole sopra PIÙ queste,
+   che sovrascrivono solo le proprietà ripetute (la media query deve stare dopo le regole base)
+   =================================================================================== */
+@media (min-width: 992px) {
+    header h1 {
+        margin-top: 10vh;
+    }
+
+    header p {
+        margin-bottom: 10vh;
+    }
+
+    section {
+        gap: 2vh;
+        padding-bottom: 0;
+    }
+
+    article {
+        display: grid; /* Sovrascrive display: flex */
+        grid-template-columns: 1fr 2fr 1fr 1fr; /* 1/5, 2/5, 1/5, 1/5 */
+        gap: 2%;
+        padding: 2% 4%;
+        overflow: hidden;
+        align-items: start; /* Blocchi allineati in alto */
+    }
+
+    article > a {
+        padding: 5% 10%;
+        border: 1px solid black;
+        margin: 0;
+    }
+
+    article > div:nth-of-type(1) { /* Nome e dettagli */
+        padding: 0 5%;
+        font-size: 1rem; /* Come nella versione originale: su desktop il testo descrittivo non è ridotto */
+        line-height: normal;
+    }
+
+    article > div:nth-of-type(2) {
+        padding: 0 5%;
+    }
+}

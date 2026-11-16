@@ -1,0 +1,572 @@
+/*
+Ho messo alcuni sfondi a caso qua e là, sono commentati,
+se vi serve capire meglio cosa si sta selezionando,
+decommentate gli sfondi e guardate con i colori a quale
+elemento fa riferimento la regola
+*/
+
+/*
+Regole di spazio per flexbox (spiegazione flex:1 e flex:2):
+    La sintassi completa di flex è:
+
+        flex: [grow] [shrink] [basis];
+
+    * flex-grow (grow):
+        -> Determina come lo spazio aggiuntivo viene distribuito tra gli elementi (è un "peso").
+    * flex-shrink (shrink):
+        -> Determina quanto l'elemento si restringe, rispetto agli altri, quando lo spazio è insufficiente.
+    * flex-basis (basis):
+        -> Determina la dimensione iniziale dell'elemento prima di distribuire lo spazio.
+
+    Quando scrivete solo flex: 1 o flex: 2, state specificando il fattore di crescita (grow),
+    ma attenzione: gli altri due valori NON restano quelli di default.
+        flex: 1   ->   equivale a   flex: 1 1 0%;
+        flex: 2   ->   equivale a   flex: 2 1 0%;
+    Cioè shrink = 1 (default) e basis = 0% (il default sarebbe auto).
+
+    * flex-basis: auto vs 0%
+        - auto -> l'elemento parte dalla sua dimensione naturale (contenuto o width),
+            poi si divide solo lo spazio AVANZATO secondo i flex-grow.
+        - 0% -> tutti partono da zero, quindi si divide TUTTO lo spazio secondo i flex-grow:
+            le proporzioni sono esatte.
+
+        Esempio: contenitore da 600px, A (contenuto 100px, grow 2) e B (contenuto 200px, grow 1)
+            - con basis auto -> avanzano 300px: A = 100 + 200 = 300px, B = 200 + 100 = 300px (uguali!)
+            - con basis 0% -> A = 400px, B = 200px (esattamente il doppio)
+
+    * flex: 1:
+        -> L'elemento occupa 1 parte dello spazio disponibile rispetto agli altri elementi.
+        -> Se tutti gli elementi hanno flex: 1, lo spazio viene distribuito equamente.
+    * flex: 2:
+        -> L'elemento occupa 2 parti dello spazio disponibile.
+        -> Un elemento con flex: 2 riceve il doppio dello spazio rispetto a un elemento con flex: 1
+            (proprio grazie alla basis 0%).
+*/
+
+/*#############################################################################################################################################*/
+
+/*
+Regole Generali per l'allineamento con flexbox
+    * Con flex-direction: row (Default):
+        - justify-content -> Usato per l'asse orizzontale.
+            (Es.: Spostare gli elementi a sinistra, al centro o a destra.)
+        - align-items -> Usato per l'asse verticale.
+            (Es.: Allineare gli elementi in alto, al centro o in basso.)
+    * Con flex-direction: column:
+        - justify-content -> Usato per l'asse verticale.
+            (Es.: Distribuire gli elementi in alto, al centro o in basso.)
+        - align-items -> Usato per l'asse orizzontale.
+            (Es.: Allineare gli elementi a sinistra, al centro o a destra.)
+
+    Valori utili:
+        - flex-start -> all'inizio (a sinistra o in alto)
+        - center     -> al centro
+        - flex-end   -> alla fine (a destra o in basso)
+*/
+
+/*#############################################################################################################################################*/
+
+/*
+Approfondimento selettori: spazio vs ">"
+    * A B   (con lo spazio) -> seleziona QUALUNQUE B dentro A, a qualsiasi profondità.
+    * A > B (con ">")       -> seleziona solo i B che sono figli DIRETTI di A.
+
+    Ad esempio, nell'aside di questa pagina:
+
+        aside
+            div          (1: "Successivo")
+            div          (2: lista delle card)
+                div      (card)
+                    div  (locandina)
+                    div  (testo)   <- ultimo figlio della card
+            div          (3: "Esplora trailer")
+
+        - aside div:last-child   -> prende "Esplora trailer", ma ANCHE il div testo di ogni card
+                                    e l'ultima card (perché sono anche loro "ultimi figli" del loro genitore)
+        - aside > div:last-child -> prende solo "Esplora trailer"
+
+    Visto che non possiamo usare id e class, usiamo ">" quando intendiamo "figlio diretto":
+    così ogni regola seleziona esattamente gli elementi che vogliamo.
+*/
+
+/*#############################################################################################################################################*/
+
+/*
+Approfondimento position Relative e Absolute
+    * Quando un elemento ha position: relative:
+        - Rimane nel suo flusso normale all'interno del layout.
+        - Potete spostarlo rispetto alla sua posizione originale usando proprietà come top, left, right, e bottom.
+        - Non influenza il posizionamento degli altri elementi:
+            gli altri continuano a comportarsi come se l'elemento non fosse stato spostato.
+
+        Ad esempio:
+
+            <div style="position: relative; top: 20px; left: 10px;">
+                Elemento Relativo
+            </div>
+
+            L'elemento si sposta di 20px verso il basso e di 10px verso destra rispetto alla sua posizione originale.
+            Ma per gli altri elementi, esso sembra essere ancora nella sua posizione originale.
+
+    * Quando un elemento ha position: absolute:
+        - Esce dal flusso normale del layout (non occupa più spazio nel layout).
+        - Viene posizionato rispetto al primo antenato che ha una position diversa da static
+            (relative, absolute, fixed o sticky).
+            Se non lo trova, si posiziona rispetto all'area iniziale della pagina (in pratica, l'inizio della pagina).
+
+        Ad esempio:
+
+            <div style="position: absolute; top: 20px; left: 10px;">
+                Elemento Assoluto!
+            </div>
+
+            Questo elemento si posiziona 20px dal bordo superiore e 10px dal bordo sinistro della pagina.
+
+        Altro esempio (ma con contenitore relativo):
+
+            <div style="position: relative; width: 300px; height: 200px; background-color: lightblue;">
+                Contenitore Relativo
+                <div style="position: absolute; top: 20px; left: 10px; background-color: pink;">
+                    Io sono assoluto!
+                </div>
+            </div>
+
+            Il contenitore (div esterno) ha position: relative, quindi l'elemento
+            con "position: absolute" si posiziona rispetto ai bordi del contenitore.
+
+    ***************************************************************************************************************************************************
+
+    * Quando si usano insieme?
+        Spesso si usano insieme per creare layout complessi, come nel caso dell'overlay.
+        L'overlay NON è un elemento dell'HTML: lo crea il CSS con lo pseudo-elemento ::before
+        (vedi la regola dell'overlay più sotto). 
+        Ecco come funziona in questo caso:
+
+            - Il contenitore (il div della locandina) ha "position: relative";
+                Questo lo rende un riferimento per gli elementi con position: absolute al suo interno.
+
+            - L'overlay (lo pseudo-elemento ::before, vuoto grazie a content: '') ha "position: absolute";
+                Si posiziona rispetto al contenitore relativo, non rispetto all'intera pagina.
+
+        Perché serve?
+            Se non avessimo usato "position: relative" sul contenitore, l'overlay con "position: absolute"
+            si sarebbe posizionato rispetto alla pagina intera, rompendo il layout.
+*/
+
+/*#############################################################################################################################################*/
+
+/*
+Approfondimento :nth-child e :nth-of-type
+
+    * Cos'è :nth-child?
+        - Seleziona il "n-esimo figlio" di un elemento genitore, indipendentemente dal tipo di elemento.
+        - Considera tutti i figli (es. div, p, span) e conta la loro posizione sequenziale nel genitore.
+
+        Ad esempio:
+            <div>
+                <p>Primo Paragrafo</p>      <- 1° figlio, 1° <p>
+                <span>Primo Span</span>     <- 2° figlio, 1° <span>
+                <p>Secondo Paragrafo</p>    <- 3° figlio, 2° <p>
+            </div>
+
+        CSS:
+            div :nth-child(3) {
+                color: green;
+            }
+
+        Risultato:
+            - Il terzo figlio del div (<p>Secondo Paragrafo</p>) diventa verde,
+                perché nth-child conta tutti i figli, ignorando il loro tipo.
+
+    ******************************************************************************************************************
+
+    * Cos'è :nth-of-type?
+        - Seleziona il "n-esimo elemento di un certo tipo" tra i figli di un elemento genitore.
+        - Conta solo gli elementi dello stesso tipo, ignorando gli altri.
+
+        Ad esempio (stesso HTML di sopra):
+
+        CSS:
+            div p:nth-of-type(2) {
+                color: orange;
+            }
+
+        Risultato:
+            - Il secondo elemento <p> (<p>Secondo Paragrafo</p>) diventa arancione,
+                ignorando la presenza degli <span>.
+
+    ******************************************************************************************************************
+
+    * Caso speciale: tipo + nth-child
+        - Potete combinare il selettore del tipo (p, span, ecc.) con nth-child:
+            l'elemento viene selezionato solo se è di quel tipo E se si trova in quella posizione.
+
+        Ad esempio (stesso HTML di sopra):
+
+        CSS:
+            div p:nth-child(2) {
+                color: red;
+            }
+
+        Risultato:
+            - Non seleziona nulla, perché il secondo figlio del <div> è uno <span>, non un <p>: il selettore è
+                sbagliato in questo caso. Per selezionare "<p>Secondo Paragrafo</p>" e farlo diventare rosso
+                sarebbero stati corretti i selettori:
+                    * div p:nth-child(3)
+                    * div :nth-child(3)
+                    * div p:nth-of-type(2)
+
+    ******************************************************************************************************************
+
+    * Riepilogo:
+        - nth-child(n)   -> seleziona l'elemento se è l'n-esimo figlio del genitore, contando TUTTI i figli.
+        - nth-of-type(n) -> seleziona l'elemento se è l'n-esimo figlio DEL SUO TIPO, contando solo quel tipo.
+        - p:nth-child(n) -> seleziona un <p> solo se è anche l'n-esimo figlio in assoluto
+                            (se in quella posizione c'è un altro tipo, non seleziona nulla).
+*/
+
+/*#############################################################################################################################################*/
+
+
+/* Reset del box-model: width e height includono padding e bordo.
+Così le percentuali che scriviamo sono quelle reali, anche quando aggiungiamo padding */
+* {
+    box-sizing: border-box;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* Toglie il margine di default del body (8px) */
+    padding: 0;
+    background-color: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra orizzontalmente header e main (asse secondario della column) */
+}
+
+p {
+    /* Sovrascriviamo i margini di default dei paragrafi, poi se servono li aggiungiamo */
+    margin: 0.2em 0 0.2em 0; /* top, right, bottom, left */
+}
+
+a {
+    /* Stile di base dei link: niente sottolineatura, colore ereditato dal genitore */
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Rating: gli unici <span> della pagina sono i valori "Like" e "Love" */
+p span {
+    margin-right: 1em; /* Spazio dopo ogni valore, così "Like" e "Love" non sono attaccati */
+}
+
+a img {
+    /* Le img sono elementi in linea, cioè poggiano sulla linea di base del testo e sotto resta
+    lo spazio per le lettere come g, p, y. Con 'display:block;' quello spazio sparisce */
+    display: block;
+}
+
+/* Header */
+header {
+    width: 100%;
+    height: 6vh;
+    padding: 0.5% 0 0.5% 0; /* top, right, bottom, left ||| NB: le % del padding si calcolano sempre 
+    sulla LARGHEZZA del contenitore (del body in questo caso), se le volete basate su altezza usate vh */
+    background-color: rgb(20, 20, 20);
+}
+
+header > div {
+    margin: auto; 
+    width: 80vw; /* Come da specifiche: 80% del viewport */
+    height: 100%; /* % dell'ALTEZZA interna dell'header (6vh meno il padding). Funziona perché
+    l'header ha un'altezza definita: senza, il 100% verrebbe ignorato */
+    display: flex;
+    flex-direction: row; 
+}
+
+header > div > div { /* Prende entrambi i div dentro al div dell'header */
+    /* Questa serve ad allineare verticalmente al centro il logo e la barra di ricerca rispetto all'header */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* column -> justify-content lavora in verticale */
+}
+
+header img {
+    height: 4vh;
+    width: auto; /* Mantiene le proporzioni del logo, dopo che ne abbiamo specificato l'aqltezza */
+}
+
+header > div > div:last-child {
+    /* Div che contiene la barra di ricerca */
+    /* background-color: red; */
+    align-items: center; /* column -> align-items lavora in orizzontale: centra la barra nel div */
+    width: 55vw; /* Larghezza specificata a occhio a seconda del risultato */
+}
+
+header input {
+    height: 80%;
+    width: 80%; /* Messa a occhio insieme a quella sopra */
+    border: none;
+    border-radius: 5px; /* Angoli arrotondati -> In px il raggio è uguale in orizzontale e in verticale;
+    in % si calcolerebbe sulla larghezza e sull'altezza dell'input stesso (angoli ellittici) */
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    width: 80vw; /* Come da specifiche: 80% del viewport */
+    height: 75vh;
+    margin-top: 1%;
+    align-items: stretch; /* Estende l'altezza (asse perpendicolare a row in questo caso)
+    dei figli per essere uguali. Non cambia nulla se non lo mettete perché è già il valore di default */
+}
+
+
+/* Section layout */
+section {
+    flex: 2; /* flex: 2 1 0% -> occupa il doppio dello spazio dell'aside (che ha flex: 1) */
+    background-image:
+        linear-gradient(to top, black 20%, transparent), /* Gradiente nero */
+        url("src/biutiful_screen.png"); /* Immagine di sfondo */
+    background-size: cover; /* Assicura che l'immagine copra l'intero contenitore */
+    background-position: center; /* Centra l'immagine */
+}
+
+section > div {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+section > div > div:first-child { /* Div contenente la locandina */
+    flex: 0 0 25%; /* Non cresce, non si stringe, occupa sempre il 25% della section */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* row -> align-items lavora in verticale: spinge la locandina in basso */
+    padding: 0 0 4% 2%; /* top, right, bottom, left */
+}
+
+section > div > div:first-child img {
+    width: 100%; /* Ci serve ad occupare con l'immagine l'interezza del div che la
+    contiene, senza questo, l'immagine prenderebbe la sua dimensione originale */
+}
+
+section > div > div:last-child { /* Div contenente play button, titolo e durata */
+    flex: 1; /* Occupa tutto lo spazio rimanente (il 75%) */
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end; /* align-self di default è "auto" = usa l'align-items del genitore, che di default
+    è stretch (figli allungati a tutta altezza). Con flex-end questo div non viene più allungato:
+    resta alto quanto il suo contenuto e si mette in fondo alla section */
+    align-items: flex-start; /* I figli (play, titolo, durata) si allineano in alto dentro questo div,
+    quindi il play button è all'altezza del titolo. Però, poi posizioniamo la durata in basso (sotto), per farvi
+    vedere come si fa (anche perché nell'immagine è in alto...) */
+    margin-bottom: 4%;
+    /* background-color: rgba(247, 0, 255, 0.584);*/
+}
+
+section > div > div:last-child > div:nth-child(1) { /* Div che contiene il play button */
+    /*background-color: red;*/
+    flex: 0 0 15%; /* Occupa sempre il 15% del div contenitore */
+    padding: 2.5%;
+}
+
+section > div > div:last-child > div:nth-child(1) img {
+    width: 100%; /* Il play button occupa tutto il suo div (padding escluso) */
+}
+
+section > div > div:last-child > div:nth-child(2) { /* Div che contiene titolo, link e rating */
+    /*background-color: grey;*/
+    flex: 0 0 50%; /* Occupa sempre il 50% del div contenitore */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* column -> centra verticalmente il contenuto */
+    align-items: flex-start; /* column -> allinea il testo a sinistra */
+    padding: 2.5%;
+}
+
+section h1 {
+    font-size: 2.5em;
+    margin: 0 0 2% 0; /* top, right, bottom, left */
+}
+
+section h1 a:hover {
+    color: rgb(240, 216, 1); /* Titolo giallo al passaggio del mouse */
+}
+
+section > div > div:last-child > div:nth-child(2) > a { /* Link "Watch the Trailer" */
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+section > div > div:last-child > div:nth-child(2) > p { /* Rating */
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 2%;
+}
+
+section > div > div:last-child > div:nth-child(3) { /* Div che contiene la durata */
+    /* background-color: green; */
+    flex: 1; /* Occupa lo spazio rimanente */
+    align-self: flex-end; /* Solo la durata va in basso; play e titolo restano in alto (align-items: flex-start del genitore) */
+    padding: 2.5%;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.2rem;
+}
+
+
+/* Sidebar */
+aside {
+    flex: 1; /* flex: 1 1 0% -> metà dello spazio della section */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+aside > div:first-child h3 { /* "Successivo" */
+    color: rgb(240, 216, 1);
+    margin: 2.5% 0 5% 0; /* top, right, bottom, left */
+}
+
+aside > div:nth-child(2) { /* Lista delle card */
+    flex: 1; /* Occupa tutto lo spazio verticale tra "Successivo" e "Esplora trailer" */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* column -> distribuisce le card in verticale */
+    background-image: linear-gradient(rgb(20, 20, 20), rgb(0, 0, 0)); /* Da grigio molto scuro a nero */
+    padding: 2%;
+}
+
+aside > div:nth-child(2) > div { /* Ogni singola card: locandina a sinistra, testo a destra */
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    /*background-color: yellow;*/
+    margin: 1%;
+}
+
+/* le prossime 3 regole servono a creare l'overlay bianco sulla locandina */
+/* White overlay */
+
+aside > div:nth-child(2) > div > div:first-child { /* Div contenente la locandina */
+    flex: 0 0 25%; /* Non cresce, non si stringe, occupa sempre il 25% della card */
+    position: relative; /* In questo caso, position relative rende il div un riferimento
+    per posizionare elementi al suo interno (necessario per l'overlay nello stile hover successivo).
+    Vedere approfondimento position relative e absolute a inizio pagina.*/
+    overflow: hidden; /* Nasconde qualsiasi contenuto che esce dai confini del div */
+}
+
+aside > div:nth-child(2) > div > div:first-child img {
+    width: 100%; /* Fa sì che l'immagine occupi il 100% del suo container, senza andare fuori */
+    transition: all 0.3s ease; /* Aggiunge una transizione fluida (di 0.3 secondi) per qualsiasi cambiamento di stile applicato all'immagine */
+}
+
+aside > div:nth-child(2) > div > div:first-child:hover::before {
+    /* "::before" crea uno pseudo-elemento che viene inserito prima del contenuto del div:
+    siamo noi a dichiararlo e crearlo con " content: '' ", il che implica che tale
+    pseudo-elemento non ha alcun contenuto visibile di per sé */
+    content: ''; /* Crea uno pseudo-elemento vuoto */
+    position: absolute; /* Posiziona lo pseudo-elemento rispetto al div contenitore (reso possibile da position: relative; nella regola sopra). */
+    /* (top, left) = 0, e (width, height) = 100% -> fanno in modo che lo pseudo-elemento (dunque l'overlay)
+    copra tutta la larghezza e l'altezza del div su cui è posizionato (width e height al 100%), partendo
+    dal suo angolo in alto a sinistra (top e left a 0) */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Overlay bianco -> dando uno sfondo allo pseudo-elemento vuoto creiamo un overlay */
+    z-index: 1; /* Porta l'overlay sopra l'immagine */
+    pointer-events: none; /* L'overlay non blocca il click: il link della locandina resta cliccabile */
+}
+
+aside > div:nth-child(2) > div > div:last-child { /* Div testo: play + durata, titolo, link, rating */
+    flex: 1; /* Occupa il resto della card */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* column -> parte dall'alto */
+    align-items: flex-start; /* column -> allinea a sinistra */
+    /*background-color: rgb(218, 46, 172);*/
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:first-child { /* Div contenente play button e durata */
+    /*background-color: #ff0000;*/
+    width: 100%;
+    display: flex;
+    flex-direction: row; /* Disposizione orizzontale degli elementi */
+    align-items: center; /* row -> centra in verticale play e durata */
+    gap: 1vw;
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:first-child img { /* Play button */
+    /*background-color: orange;*/
+    width: 12%;
+    height: auto; /* Mantiene le proporzioni dell'immagine */
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:first-child p { /* Durata */
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.8em;
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:last-child { /* Div con titolo, link, e rating (uno sotto l'altro) */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* column -> allinea a sinistra */
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:last-child > p:first-child { /* Titolo */
+    font-size: 1.1em;
+    margin-top: 4%;
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:last-child > p:first-child a:hover {
+    color: rgb(240, 216, 1); /* Titolo giallo al passaggio del mouse */
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:last-child > a { /* Link "Watch the Trailer" */
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9em;
+}
+
+aside > div:nth-child(2) > div > div:last-child > div:last-child > p:last-child { /* Rating */
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75em;
+    margin-top: 3%;
+}
+
+aside > div:last-child h3 {
+    margin: 5% 0 0 0;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        display: none; /* Come da specifiche: su mobile la barra di navigazione non è presente */
+    }
+    body {
+        gap: 2vh;
+    }
+    main {
+        flex-direction: column; /* Una card sotto l'altra */
+        gap: 3vh; /* Spazio tra la card principale e la colonna laterale */
+        width: 95%;
+        height: auto; /* L'altezza si adatta al contenuto */
+    }
+    section {
+        flex: none; /* Non più "flex: 2" -> l'altezza la decidiamo noi */
+        height: 40vh;
+    }
+    aside {
+        flex: none; /* Non più "flex: 1" -> l'altezza si adatta al contenuto */
+    }
+    aside > div:last-child h3 {
+        margin: 0 0 5% 0;
+    }
+}

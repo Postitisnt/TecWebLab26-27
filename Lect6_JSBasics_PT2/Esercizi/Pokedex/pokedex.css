@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F2F2F2;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #CC0000;
+}
+
+h1 {
+    text-transform: uppercase;
+}
+
+/* Le tre aree della pagina */
+#erba, #squadra, #avvistati {
+    width: 70%;
+    min-height: 120px;
+    margin: 15px auto;
+    padding: 5px 15px 15px;
+    border-radius: 16px;
+}
+
+#erba {
+    background-color: #DFF2D8;
+}
+
+#squadra {
+    background-color: #E4ECF7;
+}
+
+#avvistati {
+    background-color: #E6E6E6;
+}
+
+/* Avvistati mai catturati (classe "sconosciuto"): sagome nere, si rivelano passando sopra con il mouse */
+#avvistati .sconosciuto img {
+    /* filter applica un effetto grafico: brightness(0) porta la luminosità a zero, l'immagine
+    diventa tutta nera. Lo sfondo del PNG è trasparente, quindi resta solo la sagoma */
+    filter: brightness(0);
+    transition: 0.5s;
+}
+
+#avvistati .sconosciuto:hover img {
+    filter: none;
+    transition: 0.5s;
+}
+
+#messaggio {
+    min-height: 20px;
+    font-weight: bold;
+    /* Di norma l'HTML ignora gli a capo (\n) nel testo (li trasforma in spazi): pre-line invece
+    rispetta i "\n" che il JS mette nel messaggio, così va a capo anche nella pagina */
+    white-space: pre-line;
+}
+
+/* Zaino: elenco senza pallini, righe alterne grigie */
+.zaino {
+    border: 2px solid #CC0000;
+    width: 25%;
+    min-width: 200px;
+    margin: auto;
+    list-style: none; /* togli i pallini di default delle liste */
+    padding: 0;
+}
+
+.zaino li {
+    padding: 4px;
+}
+
+.zaino li:nth-child(even) {
+    background-color: lightgray;
+}
+
+/* Carta di un Pokémon (come nell'esercizio sui selettori) */
+.carta {
+    display: inline-block;
+    vertical-align: top;
+    width: 160px;
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.carta img {
+    width: 100px;
+}
+
+.carta h3, .carta p { /* tutti gli h3 e p dentro la carta */
+    margin: 4px 0;
+}
+
+/* Colore del tipo */
+.elettro { color: goldenrod; }
+.fuoco { color: orangered; }
+.acqua { color: dodgerblue; }
+.erba { color: green; }
+.normale { color: gray; }
+.psico { color: mediumorchid; }
+.veleno { color: purple; }
+.lotta { color: firebrick; }
+.terra { color: sienna; }
+.drago { color: slateblue; }
+.ghiaccio { color: darkturquoise; }
+
+/* Pokémon leggendario: bordo dorato (classe, non id: le carte leggendarie possono essere più di una da ora) */
+.leggendario {
+    border: 4px solid gold;
+}
+
+/* Bottoni */
+button {
+    font-size: 14px;
+    padding: 6px 12px;
+    margin: 3px;
+    border: none;
+    border-radius: 6px;
+    background-color: #CC0000;
+    color: white;
+    cursor: pointer; /* cambia il cursore quando il mouse è sopra, mettendo la manina */
+}
+
+button:hover {
+    background-color: #990000;
+}
+
+/* Bottone disattivato: grigio. Sta dopo :hover, così vince anche col mouse sopra */
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed; /* cambia il cursore quando il mouse è sopra, mettendo non cliccabile */
+}

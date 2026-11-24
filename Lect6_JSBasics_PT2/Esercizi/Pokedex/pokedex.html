@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Esercizio JS - Pokédex</title>
+        <link href="pokedex.css" rel="stylesheet">
+        <script src="pokedex.js" defer></script>
+    </head>
+    <body>
+        <h1>Il mio Pokédex</h1>
+        <p id="intro">Esplora l'erba alta e cattura i Pokémon selvatici.<br>
+            Puoi portare con te al massimo 6 Pokémon.</p>
+
+        <button type="button" id="esplora">Esplora l'erba alta</button>
+        <!-- Disattivato: lo attiverà lotta.js la prossima lezione -->
+        <button type="button" id="lotta" disabled>Lotta</button>
+        <p id="messaggio"></p>
+
+        <section id="erba">
+            <h2>Erba alta</h2>
+            <!-- Vuota: le carte dei Pokémon selvatici le crea il JS -->
+        </section>
+
+        <section id="squadra">
+            <h2>Squadra (<span id="nSquadra">0</span>/6)</h2>
+            <!-- Vuota: le carte della squadra (iniziale e catturati) le crea il JS -->
+        </section>
+
+        <section id="avvistati">
+            <h2>Avvistati</h2>
+            <!-- Vuota: Pokémon incontrati ma mai catturati, come sagome nere (vedi CSS) -->
+        </section>
+
+        <h2>Zaino</h2>
+        <ul class="zaino">
+            <!-- Gli span contengono le quantità: il JS le aggiorna -->
+            <li>Poké Ball x<span id="nPokeBall">10</span></li>
+            <li>Pozione x<span id="nPozioni">3</span></li>
+        </ul>
+    </body>
+</html>

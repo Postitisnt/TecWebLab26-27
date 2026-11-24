@@ -10,7 +10,7 @@ function raccogliElementi() {
     const elementi = document.querySelectorAll(".C1, .C2");
     //console.log(typeof elementi, elementi);   // NodeList (simile a un array, ma non è un vero array)
 
-    // "Array associativo" in JS = oggetto: una raccolta di coppie chiave -> valore, tra graffe { }
+    // "Array associativo" in JS = oggetto = una raccolta di coppie chiave:valore, tra graffe { }
     const array_1 = {};
     const array_2 = {};
 
@@ -22,13 +22,13 @@ function raccogliElementi() {
         array_1[chiave] = elementi[i].textContent.trim();
     }
 
-    // for...in scorre le CHIAVI di un oggetto: per ogni chiave di array_1 creiamo in array_2
-    // la stessa chiave con "placeholder" in fondo, e lo stesso valore
+    // for...in scorre le CHIAVI di un oggetto, e per ogni chiave di array_1 creiamo in array_2
+    // la stessa chiave con "placeholder" in fondo, e con lo stesso valore che aveva in array_1
     for (const chiave in array_1) {
         array_2[chiave + "placeholder"] = array_1[chiave];   // "key_0_" -> "key_0_placeholder"
     }
 
-    // Una funzione può restituire un solo valore: per restituirne due, li mettiamo in un array
+    // Una funzione può restituire un solo valore, quindi per restituirne due li mettiamo in un array
     return [array_1, array_2];
 }
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const risultati = raccogliElementi();
     console.log("array_1:", risultati[0]);
     console.log("array_2:", risultati[1]);
-    // console.table mostra un oggetto come tabella: più leggibile in Console
+    // console.table mostra un oggetto come tabella (più leggibile in Console)
     console.table(risultati[0]);
     console.table(risultati[1]);
 });

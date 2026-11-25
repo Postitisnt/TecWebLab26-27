@@ -1,0 +1,38 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#semaforo {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 300px;
+    border: 1px solid black;
+}
+
+/* Ogni luce: un cerchio bianco (spento) */
+.luce {
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 100%;
+    background-color: white;
+}
+
+/* La luce accesa ha una di queste classi (non più un id) */
+.verde {
+    background-color: green;
+}
+
+.giallo {
+    background-color: yellow;
+}
+
+.rosso {
+    background-color: red;
+}
+
+button {
+    margin-top: 10px;
+}

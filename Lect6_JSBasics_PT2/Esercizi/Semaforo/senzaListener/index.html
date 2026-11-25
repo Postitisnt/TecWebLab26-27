@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Esercizio JS - Semaforo</title>
+        <link rel="stylesheet" href="style.css">
+        <!-- Senza defer: va bene lo stesso, perché la funzione parte solo al click (a pagina già caricata) -->
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <div id="semaforo">
+            <div id="verde" class="luce"></div>
+            <div class="luce"></div>
+            <div class="luce"></div>
+        </div>
+        <!-- onclick direttamente nell'HTML: al click chiama la funzione cambia() di script.js -->
+        <button type="button" onclick="cambia()">Cambia</button>
+    </body>
+</html>

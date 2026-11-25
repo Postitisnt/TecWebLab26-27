@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Esercizio JS - Lista dei desideri</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <h1>Lista dei desideri</h1>
+
+        <h2>Prodotti</h2>
+        <!-- Non in ordine alfabetico apposta: la lista dei desideri invece lo sarà -->
+        <ul>
+            <li>
+                <span class="nome">Zaino</span>
+                <button type="button" id="btnZaino">Aggiungi alla lista</button>
+            </li>
+            <li>
+                <span class="nome">Borraccia</span>
+                <button type="button" id="btnBorraccia">Aggiungi alla lista</button>
+            </li>
+            <li>
+                <span class="nome">Cuffie</span>
+                <button type="button" id="btnCuffie">Aggiungi alla lista</button>
+            </li>
+        </ul>
+
+        <h2>La tua lista dei desideri</h2>
+        <!-- Vuota: il JS aggiunge un <p> per ogni prodotto -->
+        <div id="lista"></div>
+    </body>
+</html>

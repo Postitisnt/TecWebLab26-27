@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+}
+
+h1 {
+    color: darkslateblue;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* Il nome del prodotto: larghezza fissa (120px), così i bottoni sono tutti allineati */
+.nome {
+    display: inline-block; /* fuori resta inline (sulla stessa riga del bottone), dentro è un blocco: accetta width -> altrimenti lo span è un inline normale e non prenderebbe larghezze */
+    width: 120px;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: slateblue;
+    color: white;
+    cursor: pointer; /* manina quando il mouse è sopra */
+}
+
+/* Più scuro quando il mouse è sopra */
+button:hover {
+    background-color: darkslateblue;
+}
+
+/* Bottone disattivato (10 pezzi raggiunti): grigio. Sta dopo :hover, così vince anche col mouse sopra */
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
